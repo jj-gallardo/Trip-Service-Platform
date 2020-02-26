@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
 using MediatR;
-using ValidationException = Trip.Application.Common.Exceptions.ValidationException;
 
 namespace Trip.Application.Common.Behaviours
 {

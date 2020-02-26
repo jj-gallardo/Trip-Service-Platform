@@ -7,5 +7,6 @@ namespace Trip.Common
     public interface IDateTime
     {
         DateTime Now { get; }
+        int CurrentYear { get; }
     }
 }
