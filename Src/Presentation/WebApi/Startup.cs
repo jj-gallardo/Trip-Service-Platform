@@ -8,10 +8,12 @@ using Application.Cards;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
@@ -33,7 +35,9 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();            
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddControllers();
+            services.AddHealthChecks();
             services.AddTransient<ICurrentUserService, CurrentUserService>();                        
             services.AddInfrastructure(Configuration);
             services.AddMongoDbPersistence(Configuration.GetConnectionString("MongoDb"), Configuration["dbName"]);
@@ -59,7 +63,8 @@ namespace WebApi
             {
                 app.UseDeveloperExceptionPage();
             }
-
+                        
+            app.UseHttpsRedirection();
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -69,6 +74,7 @@ namespace WebApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health");
             });
         }
     }

@@ -13,6 +13,10 @@ namespace Trip.WebApi.Controllers
         {
         }
 
+        /// <summary>
+        /// Get all trip cards
+        /// </summary>
+        /// <returns></returns>
         [HttpGet()]
         [ProducesResponseType(typeof(List<CardDto>), StatusCodes.Status200OK)]        
         public async Task<ActionResult<List<CardDto>>> Get()
@@ -21,8 +25,13 @@ namespace Trip.WebApi.Controllers
             return Ok(result);
         }
 
-        [HttpPost()]
-        [ProducesResponseType(typeof(CardDto), StatusCodes.Status200OK)]
+        /// <summary>
+        /// Create a trip card
+        /// </summary>
+        /// <param name="command">Create Command</param>
+        /// <returns></returns>
+        [HttpPost()]         
+        [ProducesResponseType(typeof(CardDto), StatusCodes.Status200OK)]        
         public async Task<ActionResult<CardDto>> Create([FromBody]CreateCardCommand command)
         {
             var result = await _mediator.Send(command);
