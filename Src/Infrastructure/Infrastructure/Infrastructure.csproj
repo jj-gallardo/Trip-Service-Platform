@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>Trip.Infrastructure</AssemblyName>
     <RootNamespace>Trip.Infrastructure</RootNamespace>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
 </Project>
