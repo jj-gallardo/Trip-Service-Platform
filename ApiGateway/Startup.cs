@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using Ocelot.Provider.Polly;
 
 public class Startup
 {
@@ -23,7 +24,8 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddOcelot(Configuration);
+        services.AddOcelot(Configuration)
+                .AddPolly();
     }
 
     public void Configure(IApplicationBuilder app)
