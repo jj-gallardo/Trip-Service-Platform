@@ -4,6 +4,11 @@ services:
   webapi:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - EnableServiceDiscovery=true
+      - ServiceConfig__serviceDiscoveryAddress=http://consul:8500
+      - ServiceConfig__serviceAddress=http://webapi:80
+      - ServiceConfig__serviceName=webapi
+      - ServiceConfig__serviceId=webapi-v1
     ports:
       - "80"
 
@@ -18,3 +23,6 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+  consul:   
+    ports:    
+      - "8500:8500"

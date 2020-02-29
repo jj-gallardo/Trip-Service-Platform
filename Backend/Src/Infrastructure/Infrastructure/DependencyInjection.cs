@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Trip.Common;
+using Trip.Infrastructure.ServiceDiscovery;
 
 namespace Trip.Infrastructure
 {
@@ -8,7 +9,11 @@ namespace Trip.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddTransient<IDateTime, MachineDateTime>();           
+            services.AddTransient<IDateTime, MachineDateTime>();
+
+            var serviceDiscoveryConfig = configuration.GetServiceConfig();
+            services.RegisterConsulServices(serviceDiscoveryConfig);
+
             //services.AddDbContext<ApplicationDbContext>(options =>
             //    options.UseSqlServer(configuration.GetConnectionString("NorthwindDatabase")));
 

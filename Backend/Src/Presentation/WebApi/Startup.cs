@@ -1,23 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Api.Application.Common.Interfaces;
 using Application;
-using Application.Cards;
-using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Trip.Infrastructure;
+using Trip.Infrastructure.ServiceDiscovery;
 using Trip.Persistence;
 using Trip.WebApi.Services;
 
@@ -31,26 +23,23 @@ namespace WebApi
         }
 
         public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
+        
         public void ConfigureServices(IServiceCollection services)
         {
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddControllers();
-            services.AddHealthChecks();
             services.AddTransient<ICurrentUserService, CurrentUserService>();                        
             services.AddInfrastructure(Configuration);
             services.AddMongoDbPersistence(Configuration.GetConnectionString("MongoDb"), Configuration["dbName"]);
             services.AddApplication();
-
+            services.AddHealthChecks();                    
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Trip API", Version = "v1" });
             });
 
         }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseSwagger();
@@ -63,19 +52,18 @@ namespace WebApi
             {
                 app.UseDeveloperExceptionPage();
             }
-                        
-            app.UseHttpsRedirection();
-            app.UseHttpsRedirection();
-
+                                    
             app.UseRouting();
-
             app.UseAuthorization();
-
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
                 endpoints.MapHealthChecks("/health");
             });
+            
+            if(bool.Parse(Configuration["EnableServiceDiscovery"]))
+                app.UseConsul();
         }
     }
 }

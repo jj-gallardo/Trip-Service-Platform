@@ -6,21 +6,39 @@ services:
     build:
       context: .
       dockerfile: Backend/Src/Presentation/WebApi/Dockerfile
-    links:
-      - "tripdb:tripdb"
+    depends_on:
+      - tripdb
+      - consul
+    networks:          
+      - backend
+      - frontend
 
   tripdb:  
     image: mongo:latest
 #    volumes:
 #      - mongo-data:/data/db
-    expose:
-      - "27017"
+    ports:
+      - 27017:27017
+    networks:
+      - backend
 
   apigateway:
     image: ${DOCKER_REGISTRY-}apigateway
     build:
       context: .
       dockerfile: ApiGateway/Dockerfile
-    links:
-      - "webapi:webapi"
+    networks:
+      - frontend
 
+  consul:
+    image: consul:latest
+    command: consul agent -dev -log-level=warn -ui -client=0.0.0.0
+    hostname: consul
+    container_name: consul
+    networks:
+      - backend
+      - frontend
+
+networks:
+  backend:
+  frontend:

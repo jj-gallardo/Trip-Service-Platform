@@ -15,10 +15,19 @@
         "ExceptionsAllowedBeforeBreaking": 3,
         "DurationOfBreak": 1000,
         "TimeoutValue": 5000
+      },
+      "ServiceName": "webapi",
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
       }
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "https://localhost:44347"
+    "BaseUrl": "https://localhost:44347",
+    "ServiceDiscoveryProvider": {
+      "Host": "consul",
+      "Port": 8500,
+      "Type": "Consul"
+    }
   }
 }

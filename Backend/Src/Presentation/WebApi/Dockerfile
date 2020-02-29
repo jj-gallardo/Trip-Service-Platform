@@ -4,15 +4,15 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-COPY ["Src/Presentation/WebApi/WebApi.csproj", "Src/Presentation/WebApi/"]
-COPY ["Src/Infrastructure/Infrastructure/Infrastructure.csproj", "Src/Infrastructure/Infrastructure/"]
-COPY ["Src/Core/Common/Common.csproj", "Src/Core/Common/"]
-COPY ["Src/Core/Application/Application.csproj", "Src/Core/Application/"]
-COPY ["Src/Core/Domain/Domain.csproj", "Src/Core/Domain/"]
-COPY ["Src/Infrastructure/Persistence/Persistence.csproj", "Src/Infrastructure/Persistence/"]
-RUN dotnet restore "Src/Presentation/WebApi/WebApi.csproj"
+COPY ["Backend/Src/Presentation/WebApi/WebApi.csproj", "Backend/Src/Presentation/WebApi/"]
+COPY ["Backend/Src/Infrastructure/Infrastructure/Infrastructure.csproj", "Backend/Src/Infrastructure/Infrastructure/"]
+COPY ["Backend/Src/Core/Common/Common.csproj", "Backend/Src/Core/Common/"]
+COPY ["Backend/Src/Core/Application/Application.csproj", "Backend/Src/Core/Application/"]
+COPY ["Backend/Src/Core/Domain/Domain.csproj", "Backend/Src/Core/Domain/"]
+COPY ["Backend/Src/Infrastructure/Persistence/Persistence.csproj", "Backend/Src/Infrastructure/Persistence/"]
+RUN dotnet restore "Backend/Src/Presentation/WebApi/WebApi.csproj"
 COPY . .
-WORKDIR "/src/Src/Presentation/WebApi"
+WORKDIR "/src/Backend/Src/Presentation/WebApi"
 RUN dotnet build "WebApi.csproj" -c Release -o /app/build
 
 FROM build AS publish
