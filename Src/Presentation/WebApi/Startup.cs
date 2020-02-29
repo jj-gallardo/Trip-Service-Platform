@@ -56,7 +56,7 @@ namespace WebApi
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Trip API v1");
+                c.SwaggerEndpoint("v1/swagger.json", "Trip API v1");
             });
 
             if (env.IsDevelopment())

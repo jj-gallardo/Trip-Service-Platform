@@ -15,3 +15,12 @@ services:
 #      - mongo-data:/data/db
     expose:
       - "27017"
+
+  apigateway:
+    image: ${DOCKER_REGISTRY-}apigateway
+    build:
+      context: .
+      dockerfile: ApiGateway/Dockerfile
+    links:
+      - "webapi:webapi"
+
