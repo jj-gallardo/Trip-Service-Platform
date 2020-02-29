@@ -5,7 +5,7 @@ services:
     image: ${DOCKER_REGISTRY-}webapi
     build:
       context: .
-      dockerfile: Src/Presentation/WebApi/Dockerfile
+      dockerfile: Backend/Src/Presentation/WebApi/Dockerfile
     links:
       - "tripdb:tripdb"
 
