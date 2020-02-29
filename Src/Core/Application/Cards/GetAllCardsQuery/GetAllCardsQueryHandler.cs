@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Api.Application.Common.Interfaces;
+using AutoMapper;
 using MediatR;
 using MongoDB.Driver;
 using System;
@@ -7,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Trip.Domain.Entities;
-using Trip.Persistance;
+
 
 namespace Application.Cards
 {

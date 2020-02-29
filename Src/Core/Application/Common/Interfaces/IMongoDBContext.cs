@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Trip.Domain.Entities;
 
-namespace Trip.Persistance
+namespace Api.Application.Common.Interfaces
 {
     public interface IMongoDBContext
     {

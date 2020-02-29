@@ -1,0 +1,17 @@
+version: '3.4'
+
+services:
+  webapi:
+    image: ${DOCKER_REGISTRY-}webapi
+    build:
+      context: .
+      dockerfile: Src/Presentation/WebApi/Dockerfile
+    links:
+      - "tripdb:tripdb"
+
+  tripdb:  
+    image: mongo:latest
+#    volumes:
+#      - mongo-data:/data/db
+    expose:
+      - "27017"

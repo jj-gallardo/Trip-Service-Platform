@@ -1,9 +1,10 @@
-﻿using MongoDB.Driver;
+﻿using Api.Application.Common.Interfaces;
+using MongoDB.Driver;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Trip.Domain.Entities;
-using Trip.Persistence.Configuration;
+
 
 namespace Trip.Persistance 
 { 
