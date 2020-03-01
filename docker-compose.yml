@@ -15,10 +15,6 @@ services:
 
   tripdb:  
     image: mongo:latest
-#    volumes:
-#      - mongo-data:/data/db
-    ports:
-      - 27017:27017
     networks:
       - backend
 
@@ -49,14 +45,9 @@ services:
   
   seq:
     image: datalust/seq:latest
-    ports:
-      - 3000:80
-      - 5341:5341
     networks:
       - backend
       - frontend
-    environment:
-      ACCEPT_EULA: Y
 
 networks:
   backend:
