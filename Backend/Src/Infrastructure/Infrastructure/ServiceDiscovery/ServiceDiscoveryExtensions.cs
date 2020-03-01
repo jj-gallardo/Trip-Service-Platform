@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using Consul;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,24 +39,27 @@ namespace Trip.Infrastructure.ServiceDiscovery
             var lifetime = app.ApplicationServices.GetRequiredService<IHostApplicationLifetime>();
             var serviceConfig = app.ApplicationServices.GetRequiredService<ServiceConfig>();
 
+            var name = Dns.GetHostName(); // get container id
+            var serviceIp = Dns.GetHostEntry(name).AddressList.FirstOrDefault(x => x.AddressFamily == AddressFamily.InterNetwork).ToString();
+
             var registration = new AgentServiceRegistration
             {
                 ID = $"{serviceConfig.ServiceName}-{Guid.NewGuid().ToString()}",
-                Name = serviceConfig.ServiceName,
-                Address = serviceConfig.ServiceAddress.Host,
+                Name = serviceConfig.ServiceName,                
+                Address = serviceIp,
                 Port = serviceConfig.ServiceAddress.Port,
                 Tags = new[] { "trip", "web-api-service" },
                 Checks = new AgentServiceCheck[] {
                     new AgentCheckRegistration()
                         {
-                            HTTP = $"{serviceConfig.ServiceAddress.Scheme}://{serviceConfig.ServiceAddress.Host}:{serviceConfig.ServiceAddress.Port}/health",
+                            HTTP = $"{serviceConfig.ServiceAddress.Scheme}://{serviceIp}:{serviceConfig.ServiceAddress.Port}/health",
                             Notes = "Checks /health status",
                             Timeout = TimeSpan.FromSeconds(3) ,
                             Interval = TimeSpan.FromSeconds(10)
                         }
                 }
             };
-
+            
             logger.LogInformation("Registering with Consul");
             consulClient.Agent.ServiceDeregister(registration.ID).ConfigureAwait(true);
             consulClient.Agent.ServiceRegister(registration).ConfigureAwait(true);

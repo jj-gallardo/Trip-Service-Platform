@@ -3,12 +3,6 @@
     {
       "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "webapi",
-          "Port": 80
-        }
-      ],
       "UpstreamPathTemplate": "/t/api/{everything}",
       "UpstreamHttpMethod": [ "Get", "Post" ],
       "QoSOptions": {
@@ -24,12 +18,6 @@
     {
       "DownstreamPathTemplate": "/{everything}",
       "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "identityserver",
-          "Port": 80
-        }
-      ],
       "UpstreamPathTemplate": "/auth/{everything}",
       "UpstreamHttpMethod": [ "Get", "Post" ],
       "ServiceName": "identityserver",
