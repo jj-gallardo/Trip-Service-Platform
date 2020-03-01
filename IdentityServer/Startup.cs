@@ -8,6 +8,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TripIdentityServer.Infrastructure.ServiceDiscovery;
 using Microsoft.Extensions.Configuration;
+using System.Diagnostics;
+using Serilog;
+using Serilog.Events;
+using Serilog.Sinks.SystemConsole.Themes;
 
 namespace IdentityServer
 {

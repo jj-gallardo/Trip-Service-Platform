@@ -6,6 +6,10 @@ using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Ocelot.Provider.Consul;
 using Ocelot.Provider.Polly;
+using Serilog;
+using Serilog.Events;
+using Serilog.Sinks.SystemConsole.Themes;
+using System.Diagnostics;
 
 public class Startup
 {
@@ -17,14 +21,14 @@ public class Startup
             .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
             .AddJsonFile("ocelot.json")
             .AddEnvironmentVariables();
-
+        
         Configuration = builder.Build();
     }
 
     public IConfigurationRoot Configuration { get; }
 
     public void ConfigureServices(IServiceCollection services)
-    {
+    {        
         services.AddOcelot(Configuration)
                 .AddConsul()
                 .AddPolly();

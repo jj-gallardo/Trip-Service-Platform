@@ -9,6 +9,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Serilog;
+using Serilog.Events;
+using Serilog.Sinks.SystemConsole.Themes;
+using System.Diagnostics;
 using Trip.Infrastructure;
 using Trip.Infrastructure.ServiceDiscovery;
 using Trip.Persistence;
@@ -24,9 +28,9 @@ namespace WebApi
         }
 
         public IConfiguration Configuration { get; }
-        
+
         public void ConfigureServices(IServiceCollection services)
-        {
+        {            
             services.AddMvcCore().AddAuthorization();
 
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
@@ -39,18 +43,18 @@ namespace WebApi
 
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddControllers();
-            services.AddTransient<ICurrentUserService, CurrentUserService>();                        
+            services.AddTransient<ICurrentUserService, CurrentUserService>();
             services.AddInfrastructure(Configuration);
             services.AddMongoDbPersistence(Configuration.GetConnectionString("MongoDb"), Configuration["dbName"]);
             services.AddApplication();
-            services.AddHealthChecks();                    
+            services.AddHealthChecks();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Trip API", Version = "v1" });
             });
 
         }
-        
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseSwagger();
@@ -63,19 +67,19 @@ namespace WebApi
             {
                 app.UseDeveloperExceptionPage();
             }
-                                    
+
             app.UseRouting();
-            
+
             app.UseAuthentication();
             app.UseAuthorization();
-            
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
                 endpoints.MapHealthChecks("/health");
             });
-            
-            if(bool.Parse(Configuration["EnableServiceDiscovery"]))
+
+            if (bool.Parse(Configuration["EnableServiceDiscovery"]))
                 app.UseConsul();
         }
     }

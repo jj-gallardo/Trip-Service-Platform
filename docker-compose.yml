@@ -46,6 +46,17 @@ services:
     networks:
       - backend
       - frontend
+  
+  seq:
+    image: datalust/seq:latest
+    ports:
+      - 3000:80
+      - 5341:5341
+    networks:
+      - backend
+      - frontend
+    environment:
+      ACCEPT_EULA: Y
 
 networks:
   backend:
