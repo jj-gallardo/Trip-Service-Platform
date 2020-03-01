@@ -1,16 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Api.Application.Common.Interfaces;
 using Application.Cards;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Trip.WebApi.Controllers
 {
     public class CardController : BaseController
-    {
+    {        
         public CardController(IMediator mediator) : base(mediator)
-        {
+        {                    
         }
 
         /// <summary>
@@ -18,7 +20,7 @@ namespace Trip.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet()]
-        [ProducesResponseType(typeof(List<CardDto>), StatusCodes.Status200OK)]        
+        [ProducesResponseType(typeof(List<CardDto>), StatusCodes.Status200OK)]
         public async Task<ActionResult<List<CardDto>>> Get()
         {
             var result = await _mediator.Send(new GetAllCardsQuery());

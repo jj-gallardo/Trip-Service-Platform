@@ -23,6 +23,18 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+  
+  identityserver:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - EnableServiceDiscovery=true
+      - ServiceConfig__serviceDiscoveryAddress=http://consul:8500
+      - ServiceConfig__serviceAddress=http://identityserver:80
+      - ServiceConfig__serviceName=identityserver
+      - ServiceConfig__serviceId=identityserver-v1
+    ports:
+      - "80"
+
   consul:   
     ports:    
       - "8500:8500"

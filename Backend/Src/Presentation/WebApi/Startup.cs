@@ -1,5 +1,6 @@
 using Api.Application.Common.Interfaces;
 using Application;
+using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -26,6 +27,16 @@ namespace WebApi
         
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvcCore().AddAuthorization();
+
+            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+                .AddIdentityServerAuthentication(options =>
+                {
+                    options.Authority = Configuration.GetSection("ApiAuthorization")["AuthorizationServerAddress"];
+                    options.ApiName = Configuration.GetSection("ApiAuthorization")["ApiName"];
+                    options.RequireHttpsMetadata = false;
+                });
+
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddControllers();
             services.AddTransient<ICurrentUserService, CurrentUserService>();                        
@@ -54,6 +65,8 @@ namespace WebApi
             }
                                     
             app.UseRouting();
+            
+            app.UseAuthentication();
             app.UseAuthorization();
             
             app.UseEndpoints(endpoints =>

@@ -30,6 +30,14 @@ services:
     networks:
       - frontend
 
+  identityserver:
+    image: ${DOCKER_REGISTRY-}identityserver
+    build:
+      context: .
+      dockerfile: IdentityServer/Dockerfile
+    networks:
+      - frontend
+
   consul:
     image: consul:latest
     command: consul agent -dev -log-level=warn -ui -client=0.0.0.0

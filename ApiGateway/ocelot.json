@@ -20,6 +20,22 @@
       "LoadBalancerOptions": {
         "Type": "LeastConnection"
       }
+    },
+    {
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "identityserver",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/auth/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "ServiceName": "identityserver",
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
+      }
     }
   ],
   "GlobalConfiguration": {
