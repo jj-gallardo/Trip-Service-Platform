@@ -8,7 +8,7 @@ The idea is to get a well structured scalable solution.
 Run each service using kestrel / IIS or run the whole architecture using docker-compose.
 
 ```
-docker-compose up --build
+docker-compose up
 ```
 
 It'll start several services / containers:
